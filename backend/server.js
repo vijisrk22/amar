@@ -35,7 +35,7 @@ app.use('/api', require('./routes/content'));
 app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
 
 // Serve Angular app in production
-const angularDist = path.join(__dirname, 'public');
+const angularDist = path.join(__dirname, 'public', 'browser');
 app.use(express.static(angularDist));
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api')) {
