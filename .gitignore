@@ -1,0 +1,6 @@
+node_modules/
+backend/data/
+backend/public/browser/
+*.db
+.angular/
+dist/

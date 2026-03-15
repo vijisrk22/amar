@@ -1,0 +1,52 @@
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const { getDb } = require('./database');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Optional auth extraction (non-blocking — sets req.user if token present)
+const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('./routes/auth');
+app.use((req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    try {
+      req.user = jwt.verify(authHeader.split(' ')[1], JWT_SECRET);
+    } catch (e) { /* ignore invalid tokens */ }
+  }
+  next();
+});
+
+// API routes
+app.use('/api/books', require('./routes/books'));
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/cart', require('./routes/cart'));
+app.use('/api/orders', require('./routes/orders'));
+app.use('/api/wishlist', require('./routes/wishlist'));
+app.use('/api', require('./routes/content'));
+
+// Static assets (book images, etc.)
+app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
+
+// Serve Angular app in production
+const angularDist = path.join(__dirname, 'public');
+app.use(express.static(angularDist));
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  res.sendFile(path.join(angularDist, 'index.html'));
+});
+
+// Initialize DB
+getDb();
+
+app.listen(PORT, () => {
+  console.log(`🚀 Amar Books API running on http://localhost:${PORT}`);
+});

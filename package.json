@@ -1,0 +1,17 @@
+{
+  "name": "amarbooks",
+  "version": "1.0.0",
+  "description": "Amar Books — Premium Coffee Table Books on Indian Heritage",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "build": "cd frontend && npm run build -- --output-path=../backend/public",
+    "postinstall": "cd backend && npm install && cd ../frontend && npm install",
+    "seed": "cd backend && node seed.js",
+    "dev:backend": "cd backend && node server.js",
+    "dev:frontend": "cd frontend && npx ng serve --proxy-config proxy.conf.json --port 4200"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
