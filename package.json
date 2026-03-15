@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node backend/server.js",
     "build": "cd frontend && npm run build -- --output-path=../backend/public",
-    "postinstall": "cd backend && npm install && cd ../frontend && npm install",
+    "postinstall": "cd backend && npm install && cd ../frontend && npm install --include=dev",
     "seed": "cd backend && node seed.js",
     "dev:backend": "cd backend && node server.js",
     "dev:frontend": "cd frontend && npx ng serve --proxy-config proxy.conf.json --port 4200"
