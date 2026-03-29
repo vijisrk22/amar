@@ -44,8 +44,17 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(angularDist, 'index.html'));
 });
 
-// Initialize DB
-getDb();
+// Initialize DB & auto-seed if empty
+const db = getDb();
+const bookCount = db.prepare('SELECT COUNT(*) as count FROM books').get();
+if (bookCount.count === 0) {
+  console.log('📦 Database is empty — running seed...');
+  require('./seed');
+}
+
+const fs = require('fs');
+const assetsDir = path.join(__dirname, 'public', 'assets');
+console.log(`📁 Assets directory: ${assetsDir} (exists: ${fs.existsSync(assetsDir)})`);
 
 app.listen(PORT, () => {
   console.log(`🚀 Amar Books API running on http://localhost:${PORT}`);
