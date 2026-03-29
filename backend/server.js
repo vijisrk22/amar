@@ -31,9 +31,6 @@ app.use('/api/orders', require('./routes/orders'));
 app.use('/api/wishlist', require('./routes/wishlist'));
 app.use('/api', require('./routes/content'));
 
-// Static assets (book images, etc.)
-app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
-
 // Serve Angular app in production
 const angularDist = path.join(__dirname, 'public', 'browser');
 app.use(express.static(angularDist));
